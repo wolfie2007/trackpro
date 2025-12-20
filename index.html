@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackPro - Advanced Parcel Tracking System</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Loading Bar -->
+    <div id="loadingBar" class="loading-bar"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">📦</span>
+                <h1>TrackPro</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#track" class="nav-link">Track Parcel</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><a href="signup.html" class="nav-link">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Track Your Parcel Real-Time</h2>
+            <p>Your delivery, always in sight</p>
+        </div>
+    </section>
+
+    <!-- Main Tracking Section -->
+    <section class="tracking-section" id="track">
+        <div class="container">
+            <div class="search-container">
+                <div class="search-box">
+                    <h2>Track Your Order</h2>
+                    <form id="trackingForm">
+                        <input 
+                            type="text" 
+                            id="trackingInput" 
+                            placeholder="Enter Tracking Number (e.g., TRK123456789)" 
+                            class="tracking-input"
+                            required
+                        >
+                        <button type="submit" class="btn-search">
+                            <span>🔍</span> Track Now
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message"></div>
+
+            <!-- Results Section -->
+            <div id="resultsContainer" class="results-container hidden">
+                <!-- Package Header -->
+                <div class="package-header">
+                    <div class="header-left">
+                        <h3 id="packageTitle">Package Details</h3>
+                        <p id="packageStatus" class="status-label"></p>
+                    </div>
+                    <div class="header-right">
+                        <div class="status-badge">
+                            <span id="statusEmoji">📦</span>
+                            <span id="statusText">Processing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Info Cards -->
+                <div class="info-cards">
+                    <div class="info-card">
+                        <label>📍 Current Location</label>
+                        <p id="currentLocation">Loading...</p>
+                    </div>
+                    <div class="info-card">
+                        <label>🚚 Status</label>
+                        <p id="deliveryStatus">Loading...</p>
+                    </div>
+                    <div class="info-card">
+                        <label>📅 Estimated Delivery</label>
+                        <p id="estimatedDelivery">Loading...</p>
+                    </div>
+                    <div class="info-card">
+                        <label>⏱️ Last Updated</label>
+                        <p id="lastUpdated">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Package Details -->
+                <div class="package-details">
+                    <h4>Package Information</h4>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="label">Tracking Number:</span>
+                            <span class="value" id="detailTrackingNo">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Sender:</span>
+                            <span class="value" id="detailSender">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Receiver:</span>
+                            <span class="value" id="detailReceiver">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Weight:</span>
+                            <span class="value" id="detailWeight">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Service Type:</span>
+                            <span class="value" id="detailService">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Destination:</span>
+                            <span class="value" id="detailDestination">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="timeline-section">
+                    <h4>Tracking History</h4>
+                    <div class="timeline" id="timeline">
+                        <!-- Timeline items will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Origin to Destination Map -->
+                <div class="route-section">
+                    <h4>Journey Map</h4>
+                    <div class="route-info">
+                        <div class="route-start">
+                            <span class="route-icon">📤</span>
+                            <p id="routeFrom">Origin City</p>
+                        </div>
+                        <div class="route-line">
+                            <div class="route-progress" id="routeProgress"></div>
+                        </div>
+                        <div class="route-end">
+                            <span class="route-icon">📥</span>
+                            <p id="routeTo">Destination City</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Preferences -->
+                <div class="notification-section">
+                    <h4>Notification Preferences</h4>
+                    <div class="notification-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="notification-checkbox" checked> 
+                            SMS Notification
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="notification-checkbox" checked> 
+                            Email Notification
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="notification-checkbox"> 
+                            Push Notification
+                        </label>
+                    </div>
+                    <button class="btn-secondary" onclick="saveNotifications()">Save Preferences</button>
+                </div>
+
+                <button class="btn-back" onclick="resetTracking()">← Track Another Parcel</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🚚</div>
+                    <h3>Express Delivery</h3>
+                    <p>24-48 hour delivery nationwide with real-time tracking</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🌍</div>
+                    <h3>International Shipping</h3>
+                    <p>Global delivery to 200+ countries with customs support</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🛡️</div>
+                    <h3>Full Insurance</h3>
+                    <p>Complete coverage for your valuable packages</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📱</div>
+                    <h3>Smart Notifications</h3>
+                    <p>Real-time SMS, Email & Push notifications</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <h4>📞 Phone</h4>
+                        <p>+92 340 9192329</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>📧 Email</h4>
+                        <p>support@au.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>🕐 Hours</h4>
+                        <p>24/7 Customer Support</p>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 TrackPro | ICT FP Meerub, Waqas, Saaib</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
+
