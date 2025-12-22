@@ -11,21 +11,44 @@
     <div id="loadingBar" class="loading-bar"></div>
 
     <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-icon">📦</span>
-                <h1>TrackPro</h1>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li><a href="login.html" class="nav-link">Login</a></li>
-                <li><a href="signup.html" class="nav-link">Sign Up</a></li>
-                <li><a href="account.html" class="nav-link">My Account</a></li>
-            </ul>
+   <!-- Dark Overlay (appears when menu opens) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <span class="logo-icon">📦</span>
+            <h1>TrackPro</h1>
         </div>
-    </nav>
+        
+        <!-- Hamburger Menu Button (Only visible on mobile) -->
+        <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <!-- Navigation Menu (Slides from left on mobile) -->
+        <ul class="nav-menu" id="navMenu">
+            <!-- Sidebar Header (Only visible on mobile) -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span class="logo-icon">📦</span>
+                    <h2>TrackPro</h2>
+                </div>
+                <button class="sidebar-close" onclick="closeSidebar()" aria-label="Close">×</button>
+            </div>
+            
+            <!-- Menu Items -->
+            <li><a href="#home" class="nav-link" onclick="closeSidebar()">Home</a></li>
+            <li><a href="#contact" class="nav-link" onclick="closeSidebar()">Contact</a></li>
+            <li><a href="login.html" class="nav-link" onclick="closeSidebar()">Login</a></li>
+            <li><a href="signup.html" class="nav-link" onclick="closeSidebar()">Sign Up</a></li>
+            <li><a href="account.html" class="nav-link" onclick="closeSidebar()">My Account</a></li>
+        </ul>
+    </div>
+</nav>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
