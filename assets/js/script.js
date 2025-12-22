@@ -458,3 +458,59 @@ function printTracking(trackingNumber) {
     printWindow.document.close();
     printWindow.print();
 }}
+
+// Toggle sidebar menu (open/close)
+function toggleSidebar() {
+    const navMenu = document.getElementById('navMenu');
+    const hamburger = document.getElementById('hamburger');
+    const overlay = document.getElementById('sidebarOverlay');
+    const body = document.body;
+    
+    navMenu.classList.toggle('active');
+    hamburger.classList.toggle('active');
+    overlay.classList.toggle('active');
+    body.classList.toggle('menu-open');
+}
+
+// Close sidebar menu
+function closeSidebar() {
+    const navMenu = document.getElementById('navMenu');
+    const hamburger = document.getElementById('hamburger');
+    const overlay = document.getElementById('sidebarOverlay');
+    const body = document.body;
+    
+    navMenu.classList.remove('active');
+    hamburger.classList.remove('active');
+    overlay.classList.remove('active');
+    body.classList.remove('menu-open');
+}
+
+// Close menu with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeSidebar();
+    }
+});
+
+// Prevent body scroll when menu is open (for better mobile experience)
+document.addEventListener('DOMContentLoaded', function() {
+    const navMenu = document.getElementById('navMenu');
+    
+    // Prevent scrolling on the body when menu is open
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.target.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+    });
+    
+    if (navMenu) {
+        observer.observe(navMenu, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+});
