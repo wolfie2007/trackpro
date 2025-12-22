@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account - TrackPro</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         .account-section {
             padding: 60px 20px;
@@ -416,10 +417,14 @@
     <section class="account-section">
         <div class="account-container">
             <!-- Account Header -->
-            <div class="account-header">
-                <h1>👋 Welcome Back!</h1>
-                <p>Manage your account, track shipments, and view your order history</p>
-            </div>
+           <div class="account-header">
+    <h1>👋 Welcome Back!</h1>
+    <p>Manage your account, track shipments, and view your order history</p>
+    <button class="download-statement-btn" onclick="downloadAccountStatement()">
+        <span class="download-icon">📄</span>
+        Download Account Statement
+    </button>
+</div>
 
             <!-- Account Grid -->
             <div class="account-grid">
