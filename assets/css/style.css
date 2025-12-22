@@ -1609,3 +1609,42 @@ body.menu-open {
     color: var(--primary-color);
     text-shadow: none;
 }
+/* ============ DOWNLOAD STATEMENT BUTTON ============ */
+.download-statement-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--yellow-accent);
+    border: 2px solid var(--yellow-accent);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.download-statement-btn:hover {
+    background: var(--yellow-accent);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.download-statement-btn:active {
+    transform: translateY(0);
+}
+
+.download-icon {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .download-statement-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
