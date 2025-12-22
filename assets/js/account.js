@@ -343,3 +343,155 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('pushNotif').checked = settings.pushNotifications;
     }
 });
+// Function to generate and download PDF account statement
+function downloadAccountStatement() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Get user data from localStorage
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const trackingHistory = JSON.parse(localStorage.getItem('trackingHistory') || '[]');
+    
+    // Add logo/header
+    doc.setFillColor(0, 0, 0);
+    doc.rect(0, 0, 210, 40, 'F');
+    
+    doc.setTextColor(255, 215, 0);
+    doc.setFontSize(24);
+    doc.setFont(undefined, 'bold');
+    doc.text('📦 TrackPro', 20, 25);
+    
+    doc.setFontSize(10);
+    doc.setFont(undefined, 'normal');
+    doc.text('Account Statement', 20, 33);
+    
+    // Date
+    const today = new Date().toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    doc.setTextColor(255, 215, 0);
+    doc.text(`Generated: ${today}`, 150, 25);
+    
+    // Account Information Section
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text('Account Information', 20, 55);
+    
+    doc.setDrawColor(255, 215, 0);
+    doc.setLineWidth(0.5);
+    doc.line(20, 58, 190, 58);
+    
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'normal');
+    let yPos = 68;
+    
+    doc.setFont(undefined, 'bold');
+    doc.text('Name:', 20, yPos);
+    doc.setFont(undefined, 'normal');
+    doc.text(`${currentUser.firstName || 'N/A'} ${currentUser.lastName || ''}`, 60, yPos);
+    
+    yPos += 8;
+    doc.setFont(undefined, 'bold');
+    doc.text('Email:', 20, yPos);
+    doc.setFont(undefined, 'normal');
+    doc.text(currentUser.email || 'N/A', 60, yPos);
+    
+    yPos += 8;
+    doc.setFont(undefined, 'bold');
+    doc.text('Phone:', 20, yPos);
+    doc.setFont(undefined, 'normal');
+    doc.text(currentUser.phone || 'N/A', 60, yPos);
+    
+    yPos += 8;
+    doc.setFont(undefined, 'bold');
+    doc.text('Address:', 20, yPos);
+    doc.setFont(undefined, 'normal');
+    doc.text(currentUser.address || 'N/A', 60, yPos);
+    
+    yPos += 8;
+    doc.setFont(undefined, 'bold');
+    doc.text('Member Since:', 20, yPos);
+    doc.setFont(undefined, 'normal');
+    doc.text(currentUser.signupDate || 'N/A', 60, yPos);
+    
+    // Statistics Section
+    yPos += 20;
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text('Shipment Statistics', 20, yPos);
+    
+    doc.setDrawColor(255, 215, 0);
+    doc.line(20, yPos + 3, 190, yPos + 3);
+    
+    yPos += 13;
+    const totalShipments = trackingHistory.length;
+    const activeShipments = trackingHistory.filter(t => 
+        t.status !== 'Delivered' && t.status !== 'delivered'
+    ).length;
+    const deliveredShipments = trackingHistory.filter(t => 
+        t.status === 'Delivered' || t.status === 'delivered'
+    ).length;
+    
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'normal');
+    doc.text(`Total Shipments: ${totalShipments}`, 20, yPos);
+    yPos += 8;
+    doc.text(`Active Shipments: ${activeShipments}`, 20, yPos);
+    yPos += 8;
+    doc.text(`Delivered Shipments: ${deliveredShipments}`, 20, yPos);
+    
+    // Shipping History Section
+    if (trackingHistory.length > 0) {
+        yPos += 20;
+        doc.setFontSize(16);
+        doc.setFont(undefined, 'bold');
+        doc.text('Shipping History', 20, yPos);
+        
+        doc.setDrawColor(255, 215, 0);
+        doc.line(20, yPos + 3, 190, yPos + 3);
+        
+        yPos += 13;
+        doc.setFontSize(10);
+        
+        trackingHistory.forEach((item, index) => {
+            if (yPos > 270) {
+                doc.addPage();
+                yPos = 20;
+            }
+            
+            doc.setFont(undefined, 'bold');
+            doc.text(`${index + 1}. ${item.trackingNumber || 'N/A'}`, 20, yPos);
+            yPos += 6;
+            
+            doc.setFont(undefined, 'normal');
+            doc.text(`Status: ${item.status || 'N/A'}`, 25, yPos);
+            yPos += 5;
+            doc.text(`Date: ${item.date || 'N/A'}`, 25, yPos);
+            yPos += 5;
+            doc.text(`Location: ${item.location || 'N/A'}`, 25, yPos);
+            yPos += 10;
+        });
+    }
+    
+    // Footer
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFillColor(0, 0, 0);
+        doc.rect(0, 282, 210, 15, 'F');
+        doc.setTextColor(255, 215, 0);
+        doc.setFontSize(9);
+        doc.text('© 2025 TrackPro | ICT FP Meerub, Waqas, Saaib', 105, 290, { align: 'center' });
+        doc.text(`Page ${i} of ${pageCount}`, 190, 290, { align: 'right' });
+    }
+    
+    // Save the PDF
+    const fileName = `TrackPro_Statement_${currentUser.firstName || 'Account'}_${new Date().getTime()}.pdf`;
+    doc.save(fileName);
+    
+    // Show success message
+    alert('✅ Account statement downloaded successfully!');
+}
