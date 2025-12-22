@@ -1597,3 +1597,15 @@ body {
 body.menu-open {
     overflow: hidden;
 }
+/* ============ CUSTOM TEXT SELECTION COLOR ============ */
+::selection {
+    background: var(--yellow-accent);
+    color: var(--primary-color);
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background: var(--yellow-accent);
+    color: var(--primary-color);
+    text-shadow: none;
+}
