@@ -349,8 +349,21 @@ function downloadAccountStatement() {
     const doc = new jsPDF();
     
     // Get user data from localStorage
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const trackingHistory = JSON.parse(localStorage.getItem('trackingHistory') || '[]');
+    const userLoggedIn = JSON.parse(localStorage.getItem('userLoggedIn') || '{}');
+    const storedUserData = localStorage.getItem('userData');
+    const currentUser = storedUserData ? JSON.parse(storedUserData) : {};
+    
+    // Merge user data (prefer stored userData over userLoggedIn)
+    const userData = {
+        firstName: currentUser.firstName || userLoggedIn.firstName || '',
+        lastName: currentUser.lastName || userLoggedIn.lastName || '',
+        email: currentUser.email || userLoggedIn.email || 'N/A',
+        phone: currentUser.phone || 'N/A',
+        address: currentUser.address || 'N/A',
+        signupDate: currentUser.signupDate || userLoggedIn.loginTime || 'N/A'
+    };
+    
+    const trackingHistory = userShippingHistory || [];
     
     // Add logo/header
     doc.setFillColor(0, 0, 0);
@@ -391,31 +404,31 @@ function downloadAccountStatement() {
     doc.setFont(undefined, 'bold');
     doc.text('Name:', 20, yPos);
     doc.setFont(undefined, 'normal');
-    doc.text(`${currentUser.firstName || 'N/A'} ${currentUser.lastName || ''}`, 60, yPos);
+    doc.text(`${userData.firstName} ${userData.lastName}`.trim() || 'N/A', 60, yPos);
     
     yPos += 8;
     doc.setFont(undefined, 'bold');
     doc.text('Email:', 20, yPos);
     doc.setFont(undefined, 'normal');
-    doc.text(currentUser.email || 'N/A', 60, yPos);
+    doc.text(userData.email, 60, yPos);
     
     yPos += 8;
     doc.setFont(undefined, 'bold');
     doc.text('Phone:', 20, yPos);
     doc.setFont(undefined, 'normal');
-    doc.text(currentUser.phone || 'N/A', 60, yPos);
+    doc.text(userData.phone, 60, yPos);
     
     yPos += 8;
     doc.setFont(undefined, 'bold');
     doc.text('Address:', 20, yPos);
     doc.setFont(undefined, 'normal');
-    doc.text(currentUser.address || 'N/A', 60, yPos);
+    doc.text(userData.address, 60, yPos);
     
     yPos += 8;
     doc.setFont(undefined, 'bold');
     doc.text('Member Since:', 20, yPos);
     doc.setFont(undefined, 'normal');
-    doc.text(currentUser.signupDate || 'N/A', 60, yPos);
+    doc.text(userData.signupDate, 60, yPos);
     
     // Statistics Section
     yPos += 20;
